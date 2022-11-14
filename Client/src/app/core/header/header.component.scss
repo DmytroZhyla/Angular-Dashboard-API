@@ -1,0 +1,27 @@
+.navigation {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #ccc;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2%;
+  }
+
+  &__item {
+    border: 1px salmon solid;
+    background-color: #f5e7cf;
+    color: #753530;
+    border-radius: 5px;
+    padding: 0.3% 2%;
+    transition: linear 0.5s;
+
+    &:hover {
+      background: salmon;
+      color: #755351;
+    }
+  }
+
+}

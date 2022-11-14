@@ -1,0 +1,72 @@
+<div class="filter">
+  <div class="filter__title"><h1>DASHBOARD</h1></div>
+  <div class="filter__input">
+    <h3> Find by name: </h3>
+    <input [(ngModel)]="NameFilter" class="filter__byName" type="text">
+  </div>
+  <div class="filter__container">
+    <h3> Sort: </h3>
+    <button (click)="sortDashboardByName()" class="Name"> {{nameTitle}}</button>
+    <button (click)="sortDate()" class="date">{{dateTitle}}</button>
+  </div>
+</div>
+<div class="container">
+  <div class="container__dashboards">
+    <div class="container__add">
+      <button (click)="openModal('custom-modal-1')">
+        <div>+</div>
+      </button>
+    </div>
+    <div
+      *ngFor="let dashboard of dashboards$ | async | filter:NameFilter"
+      class="dashboard"
+    >
+      <div class="dashboard__info">
+        <div (click)="selectDashboard(dashboard)" class="dashboard__name">{{dashboard.name}}</div>
+        <div (click)="selectDashboard(dashboard)" class="dashboard__description">{{dashboard.description}}</div>
+      </div>
+      <div class="dashboard__features">
+        <button (click)="deleteDashboard(dashboard._id)" class="dashboard__delete" title="Delete Dashboard">X</button>
+        <button (click)="changeDashboard(dashboard._id)" class="features__change" title="Change Name"><img
+          alt="Change name"
+          src="https://cdn3.iconfinder.com/data/icons/social-productivity-line-art-5/128/history-edit-512.png">
+        </button>
+        <button (click)="infoDashboard(dashboard._id)" class="dashboard__getInfo" title="Show info">?</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal id="custom-modal-1">
+  <button (click)="closeModal('custom-modal-1');" class="form_close">X</button>
+  <form (submit)="add('custom-modal-1')" [formGroup]="dashboardForm" class="form">
+    <h1>ADD DASHBOARD</h1>
+    <label>Name</label>
+    <input class="form__name" formControlName='name' placeholder="Name" required=true>
+    <label>Description</label>
+    <input class="form__description" formControlName='description' placeholder="Description" required=true>
+    <button class="form_add" type="submit">Add dashboard</button>
+  </form>
+</app-modal>
+
+<app-modal id="custom-modal-2">
+  <button (click)="closeModal('custom-modal-2');" class="form_close">X</button>
+  <form (submit)="changeDashboardRequest()" [formGroup]="dashboardForm" class="form">
+    <h1>Dashboard</h1>
+    <label>Name</label>
+    <input class="form__name" formControlName='name' placeholder="Name" required=true>
+    <label>Description</label>
+    <input class="form__description" formControlName='description' placeholder="Description" required=true>
+    <button class="form_add" type="submit">Change</button>
+  </form>
+</app-modal>
+
+<app-modal id="custom-modal-3">
+  <button (click)="closeModal('custom-modal-3');" class="form_close">X</button>
+  <h1>Dashboard Info</h1>
+  <h3>Dashboard name: {{dashboardInfo.name}}</h3>
+  <h3>Dashboard description: {{dashboardInfo.description}}</h3>
+  <h3>Dashboard created: {{dashboardInfo.created_date}}</h3>
+  <h3>Dashboard updated: {{dashboardInfo.updatedAt}}</h3>
+</app-modal>
+

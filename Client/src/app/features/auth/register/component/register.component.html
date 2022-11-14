@@ -1,0 +1,12 @@
+<div class="container">
+  <form [formGroup]="registerForm" (submit)="submit()" class="form">
+    <h1>Register</h1>
+    <label>Name</label>
+    <input formControlName='name'>
+    <label>Email</label>
+    <input type="email" formControlName='email' class="form__email">
+    <label>Password</label>
+    <input type="password" formControlName='password' class="form__password">
+    <button type="submit">Register</button>
+  </form>
+</div>

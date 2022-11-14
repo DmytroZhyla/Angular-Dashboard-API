@@ -1,0 +1,10 @@
+<div class="container">
+  <form [formGroup]="loginForm" (submit)="login()" class="form">
+    <h1>Login</h1>
+    <label>Email</label>
+    <input type="email" formControlName = 'email' placeholder="Email" class = "form__email">
+    <label>Password</label>
+    <input type="password" formControlName = 'password' placeholder="Password"  class = "form__password">
+    <button type="submit">Login</button>
+  </form>
+</div>

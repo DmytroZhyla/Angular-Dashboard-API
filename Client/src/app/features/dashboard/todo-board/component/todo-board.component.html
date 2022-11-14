@@ -1,0 +1,139 @@
+<div class="filter">
+  <div class="filter__title"><h1>TODO</h1></div>
+  <div class="filter__input">
+    <h3> Find by name: </h3>
+    <input [(ngModel)]="NameFilter" class="filter__byName" type="text">
+  </div>
+  <div class="filter__container">
+    <h3> Sort: </h3>
+    <button (click)="sortTodoByName()" class="Name"> {{nameTitle}}</button>
+    <button (click)="sortTodoDate()" class="date">{{dateTitle}}</button>
+  </div>
+</div>
+<button (click)="openModal('custom-modal-3')" class="show-details"> Show deleted tasks</button>
+<div class="todo">
+
+  <div class="todo__container">
+    <h1>Todo</h1>
+    <div (dragover)="dragOver($event)"
+         (drop)="dragDrop($event)"
+         [ngStyle]="{'background-color':todoColor}" class="todo__items"
+         id="todo_container">
+      <div class="colo-picker">
+        <input [(ngModel)]="todoColor" name='todoColor' type="color"/>
+      </div>
+      <button (click)="openModal('custom-modal-1','todo')"
+              class="add__task">
+        <div>+</div>
+      </button>
+      <div
+        (dragstart)="dragStart($event)"
+        *ngFor="let task of todos$ | async | todoStatus:'todo' | filter:NameFilter"
+        [id]="task._id"
+        class="item" draggable="true">
+        <div class="features">
+          <button (click)="deleteTask(task._id)" class="features__delete" title="Delete Task">X</button>
+          <button (click)="archiveTask(task._id)" class="features__archive" title="Archive Task"><img alt="Archive task"
+                                                                                                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/1200px-Internet_Archive_logo_and_wordmark.svg.png">
+          </button>
+          <button (click)="changeTask(task._id)" class="features__change" title="Change Name"><img alt="Change name"
+                                                                                                   src="https://cdn3.iconfinder.com/data/icons/social-productivity-line-art-5/128/history-edit-512.png">
+          </button>
+        </div>
+        <h3>{{task.name}}</h3>
+      </div>
+    </div>
+  </div>
+  <div
+    class="todo__container"
+  >
+    <h1>Progress</h1>
+    <div (dragover)="dragOver($event)"
+         (drop)="dragDrop($event)"
+         [ngStyle]="{'background-color':progressColor}"
+         class="todo__items" id="progress_container"
+    >
+      <div class="colo-picker">
+        <input [(ngModel)]="progressColor" name='todoColor' type="color"/>
+      </div>
+      <button (click)="openModal('custom-modal-1','progress')"
+              class="add__task">
+        <div>+</div>
+      </button>
+      <div
+        (dragstart)="dragStart($event)"
+        *ngFor="let task of todos$ | async | todoStatus:'progress' | filter:NameFilter"
+        [id]="task._id"
+        class="item" draggable="true">
+        <div class="features">
+          <button (click)="deleteTask(task._id)" class="features__delete" title="Delete Task">X</button>
+          <button (click)="archiveTask(task._id)" class="features__archive" title="Archive Task"><img alt="Archive task"
+                                                                                                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/1200px-Internet_Archive_logo_and_wordmark.svg.png">
+          </button>
+          <button (click)="changeTask(task._id)" class="features__change" title="Change Name"><img alt="Change name"
+                                                                                                   src="https://cdn3.iconfinder.com/data/icons/social-productivity-line-art-5/128/history-edit-512.png">
+          </button>
+        </div>
+        <h3>{{task.name}}</h3>
+      </div>
+    </div>
+  </div>
+  <div
+    class="todo__container">
+    <h1>Done</h1>
+    <div (dragover)="dragOver($event)"
+         (drop)="dragDrop($event)"
+         [ngStyle]="{'background-color':doneColor}"
+         class="todo__items" id="done_container">
+      <div class="colo-picker">
+        <input [(ngModel)]="doneColor" name='doneColor' type="color"/>
+      </div>
+      <button (click)="openModal('custom-modal-1','done')" class="add__task">
+        <div>+</div>
+      </button>
+      <div (dragstart)="dragStart($event)"
+           *ngFor="let task of todos$ | async | todoStatus:'done' | filter:NameFilter"
+           [id]="task._id"
+           class="item" draggable="true">
+        <div class="features">
+          <button (click)="deleteTask(task._id)" class="features__delete" title="Delete Task">X</button>
+          <button (click)="archiveTask(task._id)" class="features__archive" title="Archive Task"><img alt="Archive task"
+                                                                                                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/1200px-Internet_Archive_logo_and_wordmark.svg.png">
+          </button>
+          <button (click)="changeTask(task._id)" class="features__change" title="Change Name"><img alt="Change name"
+                                                                                                   src="https://cdn3.iconfinder.com/data/icons/social-productivity-line-art-5/128/history-edit-512.png">
+          </button>
+        </div>
+        <h3>{{task.name}}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal id="custom-modal-1">
+  <button (click)="closeModal('custom-modal-1');" class="form_close">X</button>
+  <form (submit)="add('custom-modal-1')" [formGroup]="todoForm" class="form">
+    <h1>Add Todo</h1>
+    <input class="form__name" formControlName='name' placeholder="Todo name">
+    <button type="submit">Add</button>
+  </form>
+</app-modal>
+
+<app-modal id="custom-modal-2">
+  <button (click)="closeModal('custom-modal-2');" class="form_close">X</button>
+  <form (submit)="changeTaskRequest()" [formGroup]="todoForm" class="form">
+    <h1>Change Todo Name</h1>
+    <input class="form__name" formControlName='name' placeholder="Todo name">
+    <button type="submit">Add</button>
+  </form>
+</app-modal>
+
+<app-modal id="custom-modal-3">
+  <button (click)="closeModal('custom-modal-3');" class="form_close">X</button>
+  <h1>Archive</h1>
+  <div
+    *ngFor="let task of todos$ | async | todoStatus:'deleted' | filter:NameFilter"
+    class="item">
+    <h3>{{task.name}}</h3>
+  </div>
+</app-modal>

@@ -1,0 +1,30 @@
+<header>
+  <nav class="navigation">
+    <div *ngIf="name$ | async ; else Username" class="navigation__container">
+      <a
+        class="navigation__item dashboard"
+        routerLink="/dashboard"
+        routerLinkActive="active">Dashboard</a>
+      <h2>{{name$ | async}}</h2>
+      <a
+        (click)="signOut()"
+        class="navigation__item"
+        routerLink="/auth/login"
+        routerLinkActive="active">Sign Out</a>
+    </div>
+
+    <ng-template #Username>
+      <div class="navigation__container">
+        <a
+          class="navigation__item"
+          routerLink="/auth/login"
+          routerLinkActive="active">Login</a>
+        <a
+          class="navigation__item"
+          routerLink="/auth/register"
+          routerLinkActive="active">Register</a>
+      </div>
+
+    </ng-template>
+  </nav>
+</header>
